@@ -1,13 +1,18 @@
 package com.example.springdemo.test.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.springdemo.test.mapper.BbsMapper;
+
 import com.example.springdemo.test.domain.BbsRequestDTO;
 import com.example.springdemo.test.domain.BbsResponseDTO;
-
-import java.util.Map;
-import java.util.List;
+import com.example.springdemo.test.domain.comment.CommentRequestDTO;
+import com.example.springdemo.test.domain.comment.CommentResponseDTO;
+import com.example.springdemo.test.mapper.BbsMapper;
 
 @Service
 public class BbsService {
@@ -35,8 +40,19 @@ public class BbsService {
         return bbsMapper.selectRow();
     }
 
-    public BbsResponseDTO select(Map<String, Integer> map) {
+    public Optional<BbsResponseDTO> select(Map<String, Integer> map) {
         System.out.println("debug >>> service select()" + bbsMapper);
-        return bbsMapper.getRow(map);
+        Optional<BbsResponseDTO> result = bbsMapper.getRow(map);
+        ArrayList<CommentResponseDTO> list = bbsMapper.commentSelectRow(map);
+        if( result.isPresent()){
+            result.get().setComments(list);
+        }
+
+        return result;
+    }
+
+    public void commentSave(CommentRequestDTO params) {
+        System.out.println("debug >>> service commentSave()" + bbsMapper);
+        bbsMapper.commentSaveRow(params);
     }
 }

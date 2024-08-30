@@ -3,6 +3,7 @@ package com.example.springdemo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class MyBatisApplicationTests {
         System.out.println("debug mapper >>> " + bbsMapper);
         Map<String, Integer> map = new HashMap();
         map.put("id", 1);
-        BbsResponseDTO response = bbsMapper.getRow(map);
+        Optional<BbsResponseDTO> response = bbsMapper.getRow(map);
         System.out.println("debug >>> SelectOne " + response);
     }
 
